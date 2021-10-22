@@ -1,75 +1,77 @@
+// gera número aleatório
 const codigoCorreto = Math.round(10000*Math.random());
-const correto = segmentaValor(codigoCorreto);
+const codigoString = codigoCorreto.toString();
 
-
-function bloqueiaCampo1(){
-    campo1.disabled = "true"
-    campo1.value = "- - - -"
-}
-
-let digitos;
 let tentativas = 0;
+
+
+// função executada quando o evento click for executado
 function avaliaChute() {
-    // 1) Verifica quantidade de dígitos
     tentativas++;
+    
+    // captura String
+    let entradaString = campo2.value;
+    // converte String para número
+    let entradaNumero = parseInt(entradaString);
+    // converte número para String
+    let chuteString = entradaNumero.toString();
 
-    let codigoDigitado = parseInt(campo2.value);
-    let qntDigitos = codigoDigitado.toString().length;
-    let tudoOk = true;
- 
-    if (qntDigitos != 4) {
-        // Não foi digitado um número correto
+    // Valida entrada e executa bloco principal
+    if (chuteString.length != 4) {
         alert("Não foi digitado um código válido")
-        tudoOk = false;
-    } 
-    if (tudoOk) {
-        // 2) Avalia cada dígito para imprimir correção
-        chutes.innerHTML = codigoDigitado + "<br/>" + chutes.innerHTML;
-        digitos = segmentaValor(codigoDigitado)
-        avaliaDigitos(digitos,correto)
 
-        // 3) Avalia se é o mesmo código sorteado
-        if (codigoDigitado == codigoCorreto) {
-            alert("PARABÉNS! Você recisou de "+tentativas+" tentativas");
-            btn.disabled = "true";
-            campo2.disabled = "true";
+    } else { 
+        // Bloco principal
+
+        // Função que compara cada dígito (compara caracteres)
+        avaliaDigitos(chuteString,codigoString)
+
+        // Avalia se é o chute está correto
+        if (chuteString == codigoString) {
+            btn.disabled = true;
+            campo2.disabled = true;
+            alert("PARABÉNS! Você precisou de " + tentativas + " tentativas");
         }
+
+        // Imprime os chutes realizados 
+        chutes.innerHTML = chuteString + "<br/>" + chutes.innerHTML;
+
     }
-    
-
-
-    
-
-
 }
 
-function segmentaValor(codigo) {
-    codigo = codigo.toString();
 
-    let numSeg = [];
-    for (let i = 0; i < codigo.length; i++) {
-        numSeg[i] = parseInt(codigo[i]);
-    }
-    return numSeg;
-}
 
-function avaliaDigitos(chute,correto) {
+function avaliaDigitos(chuteString,codigoString) {
+    
     let resp = "";
-    for (let i = 0; i < chute.length; i++) {
-        if (chute[i] == correto[i]) {
-            resp += "✔️";
-        } else {
-            resp += "✘";
-        }
+    for (let i = 0; i < codigoString.length; i++) {
+        // com operador ternário
+        resp += (chuteString[i] == codigoString[i]) ? "✔️" : "✘";
+
+        // com if-else
+        // if (chuteString[i] == codigoString[i]) {
+        //     resp += "✔️";
+        // } else {
+        //     resp += "✘";
+        // }        
     }
     campo1.value = resp;
+
+
+    
 }
 
 
 function liberaEasymode() {
-    if (easyMode.checked) {
-        chutes.style.display = ""
-    } else {
-        chutes.style.display = "none"
-    }
+
+    // com o operador ternário
+    chutes.style.display = (easyMode.checked) ? "" : "none";
+
+    // com if-else
+    // if (easyMode.checked) {
+    //     chutes.style.display = ""
+    // } else {
+    //     chutes.style.display = "none"
+    // }
+
 }
